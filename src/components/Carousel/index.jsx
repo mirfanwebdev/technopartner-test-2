@@ -1,6 +1,7 @@
 import Carousel from "react-multi-carousel";
 import "react-multi-carousel/lib/styles.css";
 import BannerItem from "../BannerItem";
+import { useSelector } from "react-redux";
 const responsive = {
   superLargeDesktop: {
     // the naming can be any, depends on you.
@@ -22,6 +23,10 @@ const responsive = {
 };
 
 export default function CustomCarousel(props) {
+  const { isLoading, data } = useSelector((state) => state.profile);
+  if (isLoading) {
+    return <p>Loading...</p>;
+  }
   return (
     <div className="relative pb-8">
       <Carousel
@@ -41,11 +46,14 @@ export default function CustomCarousel(props) {
         dotListClass="custom-dot-list-style"
         itemClass="carousel-item-padding-40-px"
       >
-        <BannerItem />
-        <BannerItem />
-        <BannerItem />
-        <BannerItem />
-        <BannerItem />
+        {/* <BannerItem /> */}
+        {data.banner?.map((item, index) => {
+          return (
+            <div key={index}>
+              <img src={item} alt="banner" />
+            </div>
+          );
+        })}
       </Carousel>
     </div>
   );
